@@ -92,19 +92,20 @@ class Block {
         180, 215, 248,
 
         // face 6
-        80, 70, 200,
-        80, 70, 200,
-        80, 70, 200,
-        80, 70, 200,
-        80, 70, 200,
-        80, 70, 200
+        180, 185, 248,
+        180, 185, 248,
+        180, 185, 248, 
+        180, 185, 248,
+        180, 185, 248,
+        180, 185, 248
     ];
     positionBuffer = null;
     colourBuffer = null;
 
     // cube
     constructor(gl, sideLength){
-        this.geometry *= sideLength;
+        this.geometry = this.geometry.map((val) => val * sideLength);
+        console.log(this.geometry);
         this.positionBuffer = gl.createBuffer();
         this.colourBuffer = gl.createBuffer();
     }
