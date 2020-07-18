@@ -28,6 +28,14 @@ const threeD = {
     return C;
   },
 
+  transform: (matrix, translation, rotation, scaling) => {
+    matrix = threeD.translate(matrix, translation[0], translation[1], translation[2]);
+    matrix = threeD.rotateX(matrix, rotation[0]);
+    matrix = threeD.rotateY(matrix, rotation[1]);
+    matrix = threeD.rotateZ(matrix, rotation[2]);
+    return threeD.scale(matrix, scaling[0], scaling[1], scaling[2]);
+  },
+
   translate: (matrix, tx, ty, tz) => {
     let translation = [
       1, 0, 0, 0,
