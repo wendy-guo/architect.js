@@ -63,7 +63,6 @@ const utils = {
         gl.bindBuffer(gl.ARRAY_BUFFER, block.colourBuffer);
         utils._setColours(gl, block.colours);
 
-        console.log("setup buffer data");
     },
 
     enableBufferAttribPointers: (gl, program, block) => {
@@ -80,6 +79,12 @@ const utils = {
 
         console.log("enabled buffers");
 
+    },
+
+    setSettings: (gl) => {
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // clear canvas
+        gl.enable(gl.CULL_FACE);  // cull backfacing triangles (default)
+        gl.enable(gl.DEPTH_TEST);  // enable depth filter
     }
 };
 
