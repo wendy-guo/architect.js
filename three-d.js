@@ -18,8 +18,6 @@ const threeD = {
   // returns the product of two 4x4 matrices
   matrixMultiply: (A, B) => {
     [A, B] = threeD._convertToNestedMatrix(A, B);
-    log(A);
-    log(B);
     let C = [];
     for (let r = 0; r < 4; r++) {
       for (let c = 0; c < 4; c++) {
@@ -30,41 +28,66 @@ const threeD = {
     return C;
   },
 
-  rotateX: (angle_rad) => {
+  translate: (matrix, tx, ty, tz) => {
+    let translation = [
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      tx, ty, tz, 1,
+    ];
+
+    return threeD.matrixMultiply(matrix, translation);
+  },
+
+  rotateX: (matrix, angle_rad) => {
     let c = Math.cos(angle_rad);
     let s = Math.sin(angle_rad);
-
-    return [
+    let rotation = [
       1, 0, 0, 0,
       0, c, s, 0,
       0, -s, c, 0,
       0, 0, 0, 1,
     ];
+
+    return threeD.matrixMultiply(matrix, rotation);
   },
 
-  rotateY: (angle_rad) => {
-    var c = Math.cos(angle_rad);
-    var s = Math.sin(angle_rad);
-
-    return [
+  rotateY: (matrix, angle_rad) => {
+    let c = Math.cos(angle_rad);
+    let s = Math.sin(angle_rad);
+    let rotation = [
       c, 0, -s, 0,
       0, 1, 0, 0,
       s, 0, c, 0,
       0, 0, 0, 1,
     ];
+
+    return threeD.matrixMultiply(matrix, rotation);
   },
 
-  rotateZ: (angle_rad) => {
-    var c = Math.cos(angle_rad);
-    var s = Math.sin(angle_rad);
-
-    return [
+  rotateZ: (matrix, angle_rad) => {
+    let c = Math.cos(angle_rad);
+    let s = Math.sin(angle_rad);
+    let rotation = [
       c, s, 0, 0,
       -s, c, 0, 0,
       0, 0, 1, 0,
       0, 0, 0, 1,
     ];
+
+    return threeD.matrixMultiply(matrix, rotation);
   },
+
+  scale: (matrix, sx, sy, sz) => {
+    let scaling = [
+      sx, 0, 0, 0,
+      0, sy, 0, 0,
+      0, 0, sz, 0,
+      0, 0, 0, 1,
+    ];
+
+    return threeD.matrixMultiply(matrix, scaling);
+  }
 }
 
-export {threeD};
+export { threeD };
