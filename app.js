@@ -1,6 +1,7 @@
 import { vertexShaderSource, fragmentShaderSource } from "./shaders.js";
 import { block, blockColours } from "./block.js";
 import { degToRad, radToDeg } from "./angles.js";
+import { threeD } from "./three-d.js";
 
 ("use strict");
 const log = console.log;
@@ -42,8 +43,9 @@ const setGeometry = (gl) => {
   gl.bufferData(
     gl.ARRAY_BUFFER,
     new Float32Array(block),
-    gl.STATIC_DRAW
-  );
+    gl.STATIC_DRAW);
+  
+  //gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(block), gl.STATIC_DRAW);
 };
 
 // Fill the buffer with colours for the 'F'.
@@ -52,6 +54,17 @@ const setColours = (gl) => {
     gl.ARRAY_BUFFER,
     new Uint8Array(blockColours),
     gl.STATIC_DRAW);
+  //gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(blockColours), gl.STATIC_DRAW);
+};
+
+const resize = (canvas) => {
+  if (
+    canvas.width != canvas.clientWidth ||
+    canvas.height != canvas.clientHeight
+  ) {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+  }
 };
 
 function main() {
@@ -62,6 +75,7 @@ function main() {
 
   if (!gl) {
     console.log("trying experimental");
+    return;
   }
 
   // ...........................................................
@@ -72,7 +86,6 @@ function main() {
   // lookup attributes, uniforms, and varyings
   let positionA = gl.getAttribLocation(program, "a_position");
   let colourA = gl.getAttribLocation(program, "a_colour");
-
   let matrixU = gl.getUniformLocation(program, "u_matrix");
 
   // ...........................................................
@@ -90,8 +103,8 @@ function main() {
 
   // ........................................................... 
   // initial transformation settings
-  let translation = [45, 150, 0];
-  let rotation = [degToRad(40), degToRad(25), degToRad(325)];
+  let translation = [200, 150, 0];
+  let rotation = [degToRad(50), degToRad(200), degToRad(100)];
   let scale = [1, 1, 1];
 
   // ............................................................ 
@@ -99,20 +112,33 @@ function main() {
   drawScene();
 
   function drawScene() {
-    // Tell WebGL how to convert from clip space to pixels
+
+    resize(gl.canvas);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    // Clear the canvas.
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // clear canvas
+    gl.enable(gl.CULL_FACE);  // cull backfacing triangles (default)
+    gl.enable(gl.DEPTH_TEST);  // enable depth filter
 
-    gl.enable(gl.CULL_FACE);
-    gl.enable(gl.DEPTH_TEST);
+    gl.useProgram(program);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.vertexAttribPointer(positionA, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(positionA);
 
-    gl.useProgram(program);
+    gl.bindBuffer(gl.ARRAY_BUFFER, colourBuffer);
+    gl.vertexAttribPointer(colourA, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+    gl.enableVertexAttribArray(colourA);
+
+    let matrix = threeD.project(gl.canvas.clientWidth, gl.canvas.clientHeight, 400);
+    matrix = threeD.translate(matrix, translation[0], translation[1], translation[2]);
+    matrix = threeD.rotateX(matrix, rotation[0]);
+    matrix = threeD.rotateY(matrix, rotation[1]);
+    matrix = threeD.rotateZ(matrix, rotation[2]);
+    matrix = threeD.scale(matrix, scale[0], scale[1], scale[2]);
+    gl.uniformMatrix4fv(matrixU, false, matrix);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 6 * 6);  // number of points (every 3 points draws 1 triangle)
   }
 }
 
