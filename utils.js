@@ -57,34 +57,41 @@ const utils = {
 
     setupBufferAttribPointers: (gl, block) => {
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, block.positionBuffer);
-        utils._setGeometry(gl, block.geometry);
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
+        utils._setGeometry(gl, block.getGeometry());
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, block.colourBuffer);
-        utils._setColours(gl, block.colours);
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
+        utils._setColours(gl, block.getColours());
 
     },
 
-    enableBufferAttribPointers: (gl, program, block) => {
+    enableAttribUniform: (gl, program, block) => {
         let positionA = gl.getAttribLocation(program, "a_position");
         let colourA = gl.getAttribLocation(program, "a_colour");
+        let matrixU = gl.getUniformLocation(program, "u_matrix");
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, block.positionBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
         gl.vertexAttribPointer(positionA, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(positionA);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, block.colourBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
         gl.vertexAttribPointer(colourA, 3, gl.UNSIGNED_BYTE, true, 0, 0);
         gl.enableVertexAttribArray(colourA);
 
-        console.log("enabled buffers");
-
+        gl.uniformMatrix4fv(matrixU, false, block.getMatrix());
     },
 
     setSettings: (gl) => {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);  // clear canvas
         gl.enable(gl.CULL_FACE);  // cull backfacing triangles (default)
         gl.enable(gl.DEPTH_TEST);  // enable depth filter
+    },
+
+    resetGL: (gl) => {
+        utils.resize(gl.canvas);
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+        utils.setSettings(gl);
     }
 };
 
