@@ -5,6 +5,7 @@ const log = console.log;
 
 const threeD = {
   // projects coordinate into 3d clip space and sets origin to top left corner
+
   project: (w, h, d) => {
     return [2 / w, 0, 0, 0, 0, -2 / h, 0, 0, 0, 0, 2 / d, 0, -1, 1, 0, 1];
   },
@@ -33,7 +34,7 @@ const threeD = {
     matrix = threeD.rotateX(matrix, rotation[0]);
     matrix = threeD.rotateY(matrix, rotation[1]);
     matrix = threeD.rotateZ(matrix, rotation[2]);
-    return threeD.scale(matrix, scaling[0], scaling[1], scaling[2]);
+    return threeD.scale(matrix, scaling[0], scaling[1], scaling[2], 0);
   },
 
   translate: (matrix, tx, ty, tz) => {
@@ -86,15 +87,21 @@ const threeD = {
     return threeD.matrixMultiply(matrix, rotation);
   },
 
-  scale: (matrix, sx, sy, sz) => {
+  scale: (matrix, sx, sy, sz, length) => {
     let scaling = [
       sx, 0, 0, 0,
       0, sy, 0, 0,
       0, 0, sz, 0,
       0, 0, 0, 1,
     ];
+    scaling = threeD.matrixMultiply(matrix, scaling);
 
-    return threeD.matrixMultiply(matrix, scaling);
+    if (length != 0){
+      return threeD.translate(scaling, 0, -length/2, 0); // scaling from center
+      // return threeD.translate(scaling, 0, -length, 0);  // scaling from top
+    }
+
+    return scaling;  // scaling from bottom
   }
 }
 
