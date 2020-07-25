@@ -1,3 +1,5 @@
+import { threeD } from "./three-d.js";
+
 const utils = {
     _createShader: (gl, type, source) => {
         let shader = gl.createShader(type);
@@ -18,10 +20,10 @@ const utils = {
             gl.STATIC_DRAW);
     },
 
-    _setColours: (gl, colours) => {
+    _setNormals: (gl, normals) => {
         gl.bufferData(
             gl.ARRAY_BUFFER,
-            new Uint8Array(colours),
+            new Float32Array(normals),
             gl.STATIC_DRAW);
     },
 
@@ -60,25 +62,29 @@ const utils = {
         gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
         utils._setGeometry(gl, block.getGeometry());
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
-        utils._setColours(gl, block.getColours());
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getNormalBuffer());
+        utils._setNormals(gl, block.getNormals());
 
     },
 
     enableAttribUniform: (gl, program, block) => {
         let positionA = gl.getAttribLocation(program, "a_position");
-        let colourA = gl.getAttribLocation(program, "a_colour");
+        let normalA = gl.getAttribLocation(program, "a_normal");
         let matrixU = gl.getUniformLocation(program, "u_matrix");
+        let colourU = gl.getUniformLocation(program, "u_colour");
+        let reverseLightU = gl.getUniformLocation(program, "u_reverseLight");
 
         gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
         gl.vertexAttribPointer(positionA, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(positionA);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
-        gl.vertexAttribPointer(colourA, 3, gl.UNSIGNED_BYTE, true, 0, 0);
-        gl.enableVertexAttribArray(colourA);
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getNormalBuffer());
+        gl.vertexAttribPointer(normalA, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(normalA);
 
         gl.uniformMatrix4fv(matrixU, false, block.getMatrix());
+        gl.uniform4fv(colourU, block.getColour());
+        gl.uniform3fv(reverseLightU, threeD.normalize([1.2, 1.1, 1]));
     },
 
     setSettings: (gl) => {
