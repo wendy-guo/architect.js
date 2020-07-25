@@ -100,24 +100,78 @@ const defaultColours = [
     248, 196, 205,
 
 ];
+const cubeNormals = [
+
+
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+    -1, 0, 0,
+
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+    0, -1, 0,
+
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0,
+
+]
+
+const convertRGB = (rgb) => {
+    return rgb.map((val) => val/255);
+}
 
 class Block {
     geometry = null;
-    colours = defaultColours;
+    normals = cubeNormals;
     position = null;
 
     positionBuffer = null;
-    colourBuffer = null;
+    normalBuffer = null;
+    colour = [0.2, 1, 0.2, 1];
     dimensions = [1, 1, 1];
     matrix = null;  // transformation matrix (for animations, etc.)
 
     // cube
-    constructor(gl, dimensions, position){
+    constructor(gl, dimensions, position, colour){ 
         this.dimensions = dimensions;
         this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
         this.position = position;
         this.positionBuffer = gl.createBuffer();
-        this.colourBuffer = gl.createBuffer();
+        this.normalBuffer = gl.createBuffer();
+        this.colour = convertRGB(colour);
+        console.log(this.colour);
+        this.colour.push(0.7);
     }
 
     setDimensions(dimensions){
@@ -133,8 +187,8 @@ class Block {
         return this.geometry;
     }
 
-    getColours(){
-        return this.colours;
+    getNormals(){
+        return this.normals;
     }
 
     getMatrix(){
@@ -145,12 +199,18 @@ class Block {
         return this.positionBuffer;
     }
 
-    getColourBuffer(){
-        return this.colourBuffer;
+    getNormalBuffer(){
+        return this.normalBuffer;
+    }
+
+    getColour(){
+        return this.colour;
     }
 
 }
 
+
+// to do
 class BlocksGrid {
     blocks = [];
     rows = 0;
@@ -179,7 +239,7 @@ class Stairs {
     dimensions = [1, 1, 1];
     position = null;
 
-    constructor(gl, numSteps, dimensions, position){
+    constructor(gl, numSteps, dimensions, position, colour){
         this.numSteps = numSteps;
         this.dimensions = dimensions;
         this.position = position;
@@ -189,7 +249,7 @@ class Stairs {
                     return val + dimensions[j] * i;
                 } 
                 return val;
-            })));
+            }), colour));
         }
     }
 

@@ -2,7 +2,7 @@ import { vertexShaderSource, fragmentShaderSource } from "./shaders.js";
 import { degToRad, radToDeg } from "./angles.js";
 import { threeD } from "./three-d.js";
 import { utils } from "./utils.js";
-import { Block } from "./block.js";
+import { Block } from "./blocks.js";
 
 ("use strict");
 const log = console.log;
