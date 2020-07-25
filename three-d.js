@@ -5,6 +5,10 @@ const log = console.log;
 
 const threeD = {
   // projects coordinate into 3d clip space and sets origin to top left corner
+  identity: [1, 0, 0, 0,
+             0, 1, 0, 0,
+             0, 0, 1, 0,
+             0, 0, 0, 1],
 
   perspective: (fieldOfViewInRadians, aspect, near, far) => {
     let f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
@@ -217,6 +221,11 @@ const threeD = {
         (tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02))
     ];
   },
+
+  normalize: (vector) => {
+    let magnitude = Math.sqrt(vector[0]**2 + vector[1]**2 + vector[2]**2);
+    return vector.map((val) => val/magnitude);
+  }
 }
 
 export { threeD };
