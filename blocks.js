@@ -50,21 +50,22 @@ const cubeGeometry = [
     0, 1, 1
 ];
 const defaultColours = [
-    // face 1 (front)
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
+
+    // face 1
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
 
     // face 2
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
+    211, 137, 149,
+    211, 137, 149,
+    211, 137, 149,
+    211, 137, 149,
+    211, 137, 149,
+    211, 137, 149,
 
     // face 3
     211, 137, 149,
@@ -79,16 +80,8 @@ const defaultColours = [
     253, 231, 205,
     253, 231, 205,
     253, 231, 205,
-    253, 231, 205, 
     253, 231, 205,
-
-    // face 5 (top)
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
+    253, 231, 205,
 
     // face 6
     211, 137, 149,
@@ -98,23 +91,38 @@ const defaultColours = [
     211, 137, 149,
     211, 137, 149,
 
+    // face 5 (top)
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
+    248, 196, 205,
 
 ];
 
 class Block {
-    geometry = cubeGeometry;
+    geometry = null;
     colours = defaultColours;
+    position = null;
+
     positionBuffer = null;
     colourBuffer = null;
     dimensions = [1, 1, 1];
     matrix = null;  // transformation matrix (for animations, etc.)
 
     // cube
-    constructor(gl, sideLength){
-        this.geometry = this.geometry.map((val) => val * sideLength);
+    constructor(gl, dimensions, position){
+        this.dimensions = dimensions;
+        this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
+        this.position = position;
         this.positionBuffer = gl.createBuffer();
         this.colourBuffer = gl.createBuffer();
-        this.dimensions *= sideLength;
+    }
+
+    setDimensions(dimensions){
+        this.dimensions = dimensions;
+        this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
     }
 
     setMatrix(matrix){
@@ -143,29 +151,62 @@ class Block {
 
 }
 
-class Blocks {
+class BlocksGrid {
     blocks = [];
-    dimensions = [];
+    rows = 0;
+    columns = 0;
+    dimensions = [1, 1, 1];
+
+    constructor(gl, dimensions) {
+        this.dimensions = dimensions;
+        this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
+        this.positionBuffer = gl.createBuffer();
+        this.colourBuffer = gl.createBuffer();
+    }
+
+    setDimensions(dimensions) {
+        this.dimensions = dimensions;
+        this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
+    }
+
+
+
 }
 
 class Stairs {
-    steps = [];
-    numSteps = 0;
-    spaceBetween = [0, 0, 0];
-    height = 0;
-    width = 0;
-    depth = 0;
+    blocks = [];
+    numSteps = 0;    
+    dimensions = [1, 1, 1];
+    position = null;
 
-    constructor(gl, numSteps, sideLength){
+    constructor(gl, numSteps, dimensions, position){
         this.numSteps = numSteps;
+        this.dimensions = dimensions;
+        this.position = position;
         for (let i = 0; i < numSteps; i++){
-            this.steps.push(new Block(gl, sideLength));
+            this.blocks.push(new Block(gl, dimensions, position.map((val, j) => {
+                if (j != 2){
+                    return val + dimensions[j] * i;
+                } 
+                return val;
+            })));
         }
-        this.height = sideLength;
-        this.width = sideLength;
-        this.depth = sideLength;
     }
 
+    addSteps(numSteps){
+        this.numSteps += numSteps;
+        // push more blocks
+    }
+
+    removeSteps(numSteps){
+        //check not greater than this.numSteps
+        this.numSteps -= numSteps;
+        // pop off blocks from array
+    }
+}
+
+class Structure {
+    
 
 }
 
