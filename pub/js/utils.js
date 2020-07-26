@@ -1,4 +1,4 @@
-import { threeD } from "./js/three-d.js";
+import { threeD } from "./three-d.js";
 
 const utils = {
     _createShader: (gl, type, source) => {
