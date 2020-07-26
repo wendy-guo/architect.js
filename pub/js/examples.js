@@ -244,6 +244,7 @@ blocks[3][59].setColour(c2);
 architectGrid.setAnimation(Architect.gridWaves.leftToRight);
 
 // structuresRotate scene
+const platform = new Architect.Block([550, 20, 500], [-250, -20, -250], c2);
 const blocky1 = new Architect.Block([60, 375, 60], [200, 0, -100], c1);
 const blocky2 = new Architect.Block([60, 250, 60], [-200, 0, 100], c1);
 const bridge1 = new Architect.Block([60, 20, 200], [200, 300, -40], c1);
@@ -270,6 +271,7 @@ grid4.setAnimation(Architect.gridWaves.stingrayXbutterfly);
 // add objects to respective scenes
 scene_architectGrid.addToScene(architectGrid);
 
+scene_structureRotate.addToScene(platform);
 scene_structureRotate.addToScene(blocky1);
 scene_structureRotate.addToScene(blocky2);
 scene_structureRotate.addToScene(bridge1);
