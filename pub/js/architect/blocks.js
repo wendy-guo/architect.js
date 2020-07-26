@@ -1,4 +1,5 @@
 "use strict";
+import { gridWaves } from "./grid-waves.js";
 
 const cubeGeometry = [ 
     //face 1
@@ -169,9 +170,6 @@ class Block {
         this.dimensions = dimensions;
         this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
         this.position = position;
-        this.positionBuffer = gl.createBuffer();
-        this.normalBuffer = gl.createBuffer();
-        this.colourBuffer = gl.createBuffer();
         this.lighting = colour.length === 3;
 
         if (!this.lighting){
@@ -187,6 +185,12 @@ class Block {
             this.colour = convertRGB(colour);
             this.colour.push(0.8);
         }
+    }
+
+    addBuffers(gl){
+        this.positionBuffer = gl.createBuffer();
+        this.normalBuffer = gl.createBuffer();
+        this.colourBuffer = gl.createBuffer();
     }
 
     setDimensions(dimensions){
@@ -245,30 +249,30 @@ class BlocksGrid {
     dimensions = [1, 1, 1];
     numBlocks = 0;
 
+    angle = 0;
+    animation = gridWaves.static;
+
     constructor(gl, rows, columns, dimensions, position, colour) {
         this.rows = rows;
         this.columns = columns;
         this.dimensions = dimensions;
         this.position = position;
         for (let r = 0; r < rows; r++) {
-            let row = []
+            let row = [];
             for (let c = 0; c < columns; c++){
                 row.push(new Block(gl, dimensions, [position[0] + r * dimensions[0], position[1], position[2] + c * dimensions[2]], colour));
             }
             this.blocks.push(row);
         }
-
-<<<<<<< HEAD:pub/js/architect/blocks.js
-=======
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < columns; c++) {
-                console.log(this.blocks[r][c].position);
-            }
-        }
-
->>>>>>> b14b8291d938c58b505e31ab3ccf280c1fc0b20b:pub/js/blocks.js
     }
 
+    setAnimation(animation){
+        this.animation = animation;
+    }
+
+    draw(scene){
+        this.angle = this.animation(this.angle, this.rows, this.columns, this.blocks, scene);
+    }
 
     // todo
     setDimensions(dimensions) {

@@ -7,7 +7,7 @@ const express = require('express')
 
 const app = express();
 
-app.use(express.static(__dirname + '/pub/', {index: "examples.html"}))
+app.use(express.static(__dirname + '/pub', { index: "examples.html" }))
 
 app.get('/', (req, res) => {
 	res.send('This should be the root route!')

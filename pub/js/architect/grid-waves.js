@@ -1,67 +1,73 @@
+import { threeD } from "./three-d.js";
+import { utils } from "./utils.js";
+
+
+
+const getScaleFactor = (angle) => {
+    let scaleFactor = Math.sin(angle) + 1;  // sin goes from -1 -> 1, changing to 0 -> 2
+    scaleFactor *= 2 // change to 0 -> 4
+    return ++scaleFactor; // change to 1 -> 4
+};
+
 const gridWaves = {
-    leftToRight: () => {
-        let angle = 0;
-        requestAnimationFrame(drawScene);
 
-        function drawScene() {
+    static: (angle, rows, columns, blocks, scene) => {
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < columns; c++) {
+                let matrix = threeD.translate(scene.matrix, blocks[r][c].position[0], blocks[r][c].position[1], blocks[r][c].position[2]);
+                blocks[r][c].setMatrix(matrix);
 
-            utils.resize(gl.canvas);
-            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-            utils.setSettings(gl);
-
-            gl.useProgram(program);
-
-            let offset = 0;
-
-            for (let r = 0; r < rows; r++) {
-                let matrix = threeD.translate(initMatrix, 30 * r, 0, 0);
-                matrix = threeD.scale(matrix, 1, getScaleFactor(angle + offset), 1, 25);
-                for (let c = 0; c < columns; c++) {
-                    matrix = threeD.translate(matrix, 0, 0, 30);
-                    gl.uniformMatrix4fv(matrixU, false, matrix);
-
-                    utils.enableBufferAttribPointers(gl, program, moreBlocks[r * columns + c]);
-                    gl.drawArrays(gl.TRIANGLES, 0, 6 * 6);  // number of points (every 3 points draws 1 triangle)}, 100);
-                }
-                offset += 0.2;
+                utils.setupBufferAttribPointers(scene.gl, blocks[r][c]);
+                utils.enableAttribUniform(scene.gl, scene.program, blocks[r][c]);
+                scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
             }
-
-            angle += 0.05;
-            requestAnimationFrame(drawScene);
         }
-
-        function getScaleFactor(angle){
-            let scaleFactor = Math.sin(angle) + 1;  // sin goes from -1 -> 1, changing to 0 -> 2
-            scaleFactor *= 2 // change to 0 -> 4
-            return ++scaleFactor; // change to 1 -> 4
-        }
+        return angle
     },
 
-    interweaving: (angle, offsets, initMatrix) => {
-        return [threeD.scale(initMatrix, 1, getScaleFactor(angle + offsets[0] + offsets[1]), 1, 25)];
+    leftToRight: (angle, rows, columns, blocks, scene) => {
+        console.log(scene);
+        let offset = 0;
+
+        console.log(blocks);
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < columns; c++) {
+                let matrix = threeD.translate(scene.matrix, blocks[r][c].position[0], blocks[r][c].position[1], blocks[r][c].position[2]);
+                matrix = threeD.scale(matrix, 1, getScaleFactor(angle + offset), 1, 25);
+                blocks[r][c].setMatrix(matrix);
+
+                utils.setupBufferAttribPointers(scene.gl, blocks[r][c]);
+                utils.enableAttribUniform(scene.gl, scene.program, blocks[r][c]);
+                scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
+            }
+            offset += 0.2;
+        }
+
+        return angle + 0.07;
     },
 
-    _interweaving: () => {
+    interweaving: (angle, rows, columns, blocks, scene) => {
         let offsetR = 0;
         let offsetC = 0;
 
         for (let r = 0; r < rows; r++) {
-            let matrix = threeD.translate(initMatrix, 30 * r, 0, 0);
             for (let c = 0; c < columns; c++) {
-                matrix = threeD.translate(matrix, 0, 0, 30);
-                gl.uniformMatrix4fv(matrixU, false, threeD.scale(matrix, 1, getScaleFactor(angle + offsetR + offsetC), 1, 25));
+                let matrix = threeD.translate(scene.matrix, blocks[r][c].position[0], blocks[r][c].position[1], blocks[r][c].position[2]);
+                matrix = threeD.scale(matrix, 1, getScaleFactor(angle + offsetR + offsetC), 1, 25);
+                blocks[r][c].setMatrix(matrix);
 
-                utils.enableBufferAttribPointers(gl, program, moreBlocks[r * columns + c]);
-                gl.drawArrays(gl.TRIANGLES, 0, 6 * 6);  // number of points (every 3 points draws 1 triangle)}, 100);
+
+                utils.setupBufferAttribPointers(scene.gl, blocks[r][c]);
+                utils.enableAttribUniform(scene.gl, scene.program, blocks[r][c]);
+                scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
 
                 offsetC += 0.2;
             }
             offsetR += 0.2;
         }
 
-        angle += 0.05;
-        requestAnimationFrame(drawScene);
+        return angle + 0.05;
     },
 
     cornerToCorner: () => {
@@ -148,6 +154,7 @@ const gridWaves = {
         angle += 0.07;
         requestAnimationFrame(drawScene);
     }
+
 }
 
 export {gridWaves};

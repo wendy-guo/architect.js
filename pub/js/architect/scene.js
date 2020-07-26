@@ -11,6 +11,7 @@ class Scene {
     scale;
 
     view = null;
+    matrix = null;
     camera = null;
 
     gl = null;
@@ -47,35 +48,22 @@ class Scene {
 
     setView(view){
         this.view = view;
+        this.updateMatrix();
+    }
+
+    updateMatrix(){
+        this.matrix = threeD.transform(this.view, this.translation, this.rotation, this.scale);
     }
 
     draw(){
-        let matrix = threeD.transform(this.view, this.translation, this.rotation, this.scale);
         // if not attached, error
         this.objects.forEach((obj) => {
             // check object type and draw accordingly
             if (obj instanceof Block){
-                console.log("block!")
             } else if (obj instanceof BlocksGrid){
-
-                for (let r = 0; r < obj.rows; r++) {
-                    for (let c = 0; c < obj.columns; c++) {
-                        let block = obj.blocks[r][c];
-
-                        let m = threeD.translate(matrix, block.position[0], block.position[1], block.position[2]);
-                        block.setMatrix(m);
-
-                        utils.setupBufferAttribPointers(this.gl, block);
-                        utils.enableAttribUniform(this.gl, this.program, block);
-                        this.gl.drawArrays(this.gl.TRIANGLES, 0, 6 * 6);  // number of points (every 3 points draws 1 triangle)});
-                    }
-                }
+                obj.draw(this);
             }
         });
-    }
-
-    initialize(){
-
     }
 
 }
