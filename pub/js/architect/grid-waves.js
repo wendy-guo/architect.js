@@ -44,7 +44,7 @@ const gridWaves = {
                 utils.enableAttribUniform(scene.gl, scene.program, blocks[r][c]);
                 scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
             }
-            offset += 0.2;
+            offset += 0.25;
         }
 
         return angle + 0.1;
@@ -67,9 +67,9 @@ const gridWaves = {
                 utils.enableAttribUniform(scene.gl, scene.program, blocks[r][c]);
                 scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
 
-                offsetC += 0.2;
+                offsetC += 0.1;
             }
-            offsetR += 0.2;
+            offsetR += 0.1;
         }
 
         return angle + 0.1;

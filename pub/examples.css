@@ -12,7 +12,7 @@ canvas {
 
 #architect-grid {
     height: 200px;
-    width: 80vw;
+    width: 90vw;
 }
 
 #structures-rotate {
@@ -23,4 +23,5 @@ canvas {
 .grid-animations {
     height: 500px;
     width: 500px;
+    color: rgb(133, 198, 199);
 }
