@@ -1,5 +1,8 @@
 "use strict";
 import { gridWaves } from "./grid-waves.js";
+import { threeD } from "./three-d.js";
+import { utils } from "./utils.js";
+
 
 const cubeGeometry = [ 
     //face 1
@@ -198,6 +201,35 @@ class Block {
         this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
     }
 
+    setColour(colour){
+        this.colour = [];
+
+        if (!this.lighting) {
+            colour.forEach((c) => {
+                for (let i = 0; i < 6; i++) {
+                    this.colour.push(c[0]);
+                    this.colour.push(c[1]);
+                    this.colour.push(c[2]);
+                }
+            });
+
+        } else {
+            this.colour = convertRGB(colour);
+            this.colour.push(0.8);
+        }
+    }
+
+    draw(scene){
+        let matrix = threeD.translate(scene.matrix, this.position[0], this.position[1], this.position[2]);
+        this.setMatrix(matrix);
+
+        utils.setupBufferAttribPointers(scene.gl, this);
+        utils.enableAttribUniform(scene.gl, scene.program, this);
+        scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
+
+        console.log("ummmm");
+    }
+
     setMatrix(matrix){
         this.matrix = matrix;
     }
@@ -287,17 +319,29 @@ class Stairs {
     dimensions = [1, 1, 1];
     position = null;
 
-    constructor(gl, numSteps, dimensions, position, colour){
+    constructor(numSteps, dimensions, position, colour){
         this.numSteps = numSteps;
         this.dimensions = dimensions;
         this.position = position;
         for (let i = 0; i < numSteps; i++){
-            this.blocks.push(new Block(gl, dimensions, position.map((val, j) => {
+            this.blocks.push(new Block(dimensions, position.map((val, j) => {
                 if (j != 2){
                     return val + dimensions[j] * i;
                 } 
                 return val;
             }), colour));
+        }
+    }
+
+    draw(scene) {
+        for (let i = 0; i < this.numSteps; i++) {
+            let matrix = threeD.translate(scene.matrix, this.blocks[i].position[0], this.blocks[i].position[1], this.blocks[i].position[2]);
+            this.blocks[i].setMatrix(matrix);
+
+            utils.setupBufferAttribPointers(scene.gl, this.blocks[i]);
+            utils.enableAttribUniform(scene.gl, scene.program, this.blocks[i]);
+            scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
+
         }
     }
 

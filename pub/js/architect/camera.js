@@ -18,6 +18,10 @@ class Camera {
         this.rotation = degToRad(rotation);
     }
 
+    rotate(angle){
+        this.rotation += degToRad(angle);
+    }
+
     getMatrix(){
         return 
     }

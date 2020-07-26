@@ -22,17 +22,20 @@ const Architect = {
         return utils.setupProgram(gl, vertexShaderSource, fragmentShaderSource)
     },
 
-    updateView: (gl, program, scene) => {
-        utils.resetGL(gl);
-        gl.useProgram(program);
+    updateView: (scene) => {
+        utils.resetGL(scene.gl);
+        scene.gl.useProgram(scene.program);
 
-        let projection = threeD.perspective(scene.camera.fieldOfView, gl.canvas.clientWidth / gl.canvas.clientHeight, 1, 2000);
+        let projection = threeD.perspective(scene.camera.fieldOfView, scene.gl.canvas.clientWidth / scene.gl.canvas.clientHeight, 1, 2000);
         let camera = threeD.yRotationMatrix(scene.camera.rotation);
         camera = threeD.translate(camera, 0, 0, 100);
 
         let view = threeD.inverse(camera);
         scene.setView(threeD.matrixMultiply(projection, view));
     },
+
+    // animations
+    gridWaves: gridWaves,
 
     // classes
     Block: Block,

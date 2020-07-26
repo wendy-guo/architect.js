@@ -38,6 +38,10 @@ class Scene {
                     b.addBuffers(this.gl);
                 })
             });
+        } else if (object instanceof Stairs){
+            object.blocks.forEach((b) => 
+                b.addBuffers(this.gl)
+            );
         }
         this.objects.push(object);
     }
@@ -51,18 +55,22 @@ class Scene {
         this.updateMatrix();
     }
 
+    rotateCamera(angle) {
+       this.camera.rotate(angle);
+    }
+
+    rotateScene(angles){
+        angles = angles.map((angle) => degToRad(angle));
+        this.rotation = this.rotation.map((angle, i) => angle + angles[i]);
+    }
+
     updateMatrix(){
         this.matrix = threeD.transform(this.view, this.translation, this.rotation, this.scale);
     }
 
     draw(){
-        // if not attached, error
         this.objects.forEach((obj) => {
-            // check object type and draw accordingly
-            if (obj instanceof Block){
-            } else if (obj instanceof BlocksGrid){
-                obj.draw(this);
-            }
+            obj.draw(this);
         });
     }
 
