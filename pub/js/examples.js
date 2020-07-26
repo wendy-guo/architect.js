@@ -42,10 +42,10 @@ const camera_7 = new Architect.Camera(35, 0);
 const scene_architectGrid = new Architect.Scene(gl_1, program_1, camera_1, [-1700, -300, 0], [90, 90, 0], [1, 1, 1]);  
 const scene_structureRotate = new Architect.Scene(gl_2, program_2, camera_2, [0, -100, 0], [30, -30, 0], [1, 1, 1]); 
 // const scene
-const scene_grid1 = new Architect.Scene(gl_3, program_3, camera_3, [0, -100, 0], [30, -30, 0], [1, 1, 1]);  
-const scene_grid2 = new Architect.Scene(gl_4, program_4, camera_4, [0, -100, 0], [30, -30, 0], [1, 1, 1]);  
-const scene_grid3 = new Architect.Scene(gl_5, program_5, camera_5, [0, -100, 0], [30, -30, 0], [1, 1, 1]);  
-const scene_grid4 = new Architect.Scene(gl_6, program_6, camera_6, [0, -100, 0], [30, -30, 0], [1, 1, 1]);  
+const scene_grid1 = new Architect.Scene(gl_4, program_4, camera_4, [-50, 100, 0], [30, -30, 0], [1, 1, 1]);  
+const scene_grid2 = new Architect.Scene(gl_5, program_5, camera_5, [-50, 100, 0], [30, -30, 0], [1, 1, 1]);  
+const scene_grid3 = new Architect.Scene(gl_6, program_6, camera_6, [-50, 100, 0], [30, -30, 0], [1, 1, 1]);  
+const scene_grid4 = new Architect.Scene(gl_7, program_7, camera_7, [-50, 100, 0], [30, -30, 0], [1, 1, 1]);  
 
 
 
@@ -67,12 +67,14 @@ const c2 = [[28, 16, 25],
 ];
 
 // scene objects
+
 const architectGrid = new Architect.BlocksGrid(10, 70, [55, 55, 55], [0, 0, 0], c1);
 const blocks = architectGrid.blocks;
 log(blocks[1][5]);
 blocks[1][5].setColour(c2);
 //architectGrid.setAnimation(Architect.gridWaves.interweaving);
 
+// structuresRotate scene
 const blocky1 = new Architect.Block([60, 375, 60], [200, 0, -100], c1);
 const blocky2 = new Architect.Block([60, 250, 60], [-200, 0, 100], c1);
 const bridge1 = new Architect.Block([60, 20, 200], [200, 300, -40], c1);
@@ -83,6 +85,17 @@ const hat2 = new Architect.Block([60, 15, 60], [-200, 270, 100], c1);
 const hat3 = new Architect.Block([40, 15, 40], [-190, 290, 110], c1);
 const hat4 = new Architect.Block([20, 15, 20], [-180, 310, 120], c1);
 
+const grid1 = new Architect.BlocksGrid(18, 18, [20, 20, 20], [0, 0, 0], c1);
+grid1.setAnimation(Architect.gridWaves.interweaving);
+
+const grid2 = new Architect.BlocksGrid(18, 18, [20, 20, 20], [0, 0, 0], c1);
+grid2.setAnimation(Architect.gridWaves.leftToRight);
+
+const grid3 = new Architect.BlocksGrid(18, 18, [20, 20, 20], [0, 0, 0], c1);
+grid3.setAnimation(Architect.gridWaves.cornerToCorner);
+
+const grid4 = new Architect.BlocksGrid(18, 18, [20, 20, 20], [0, 0, 0], c1);
+grid4.setAnimation(Architect.gridWaves.stingrayXbutterfly);
 
 
 // add objects to respective scenes
@@ -98,7 +111,11 @@ scene_structureRotate.addToScene(hat2);
 scene_structureRotate.addToScene(hat3);
 scene_structureRotate.addToScene(hat4);
 
+scene_grid1.addToScene(grid1);
 
+scene_grid2.addToScene(grid2);
+scene_grid3.addToScene(grid3);
+scene_grid4.addToScene(grid4);
 
 requestAnimationFrame(drawScenes);
 
@@ -107,10 +124,18 @@ function drawScenes() {
     // update views for scenes
     Architect.updateView(scene_architectGrid);
     Architect.updateView(scene_structureRotate);
+    Architect.updateView(scene_grid1);
+    Architect.updateView(scene_grid2);
+    Architect.updateView(scene_grid3);
+    Architect.updateView(scene_grid4);
 
     // draw scenes
     scene_architectGrid.draw();
     scene_structureRotate.draw();
+    scene_grid1.draw();
+    scene_grid2.draw();
+    scene_grid3.draw();
+    scene_grid4.draw();
 
     scene_structureRotate.rotateScene([0, 1, 0]);
     // rotate scene

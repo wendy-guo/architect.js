@@ -6,23 +6,21 @@
 
 canvas {
     border: 1px solid black;
-        display: block;
+    display: block;
+    margin: auto;
 }
 
 #architect-grid {
     height: 200px;
     width: 80vw;
-    margin: auto;
 }
 
 #structures-rotate {
     height: 500px;
     width: 700px;
-    margin: auto;
 }
 
-#structures-animate {
+.grid-animations {
     height: 500px;
-    width: 700px;
-    margin: auto;
+    width: 500px;
 }
