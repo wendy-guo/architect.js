@@ -2,12 +2,26 @@
     margin: 0;
     padding: 0;
     color: rgb(170, 87, 87);
+    font-family: 'Courier New', Courier, monospace;
 }
 
 canvas {
-    border: 1px solid black;
     display: block;
+    margin: 20px auto 20px auto;
+}
+
+p, h1 {
+    text-align: center;
+}
+
+div {
+    width: 50vw;
     margin: auto;
+    text-align: center;
+}
+
+.section {
+    margin-top: 50px;
 }
 
 #architect-grid {
@@ -24,4 +38,8 @@ canvas {
     height: 500px;
     width: 500px;
     color: rgb(133, 198, 199);
+}
+
+#bottom {
+    margin-bottom: 50px;
 }
