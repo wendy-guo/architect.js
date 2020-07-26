@@ -12,6 +12,8 @@ const getScaleFactor = (angle) => {
 const gridWaves = {
 
     static: (angle, rows, columns, blocks, scene) => {
+        console.log("static");
+
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < columns; c++) {
                 let matrix = threeD.translate(scene.matrix, blocks[r][c].position[0], blocks[r][c].position[1], blocks[r][c].position[2]);
@@ -26,7 +28,8 @@ const gridWaves = {
     },
 
     leftToRight: (angle, rows, columns, blocks, scene) => {
-        console.log(scene);
+        console.log("left to right");
+
         let offset = 0;
 
         console.log(blocks);
@@ -44,10 +47,12 @@ const gridWaves = {
             offset += 0.2;
         }
 
-        return angle + 0.07;
+        return angle + 0.1;
     },
 
     interweaving: (angle, rows, columns, blocks, scene) => {
+        console.log("interweaving");
+
         let offsetR = 0;
         let offsetC = 0;
 
@@ -67,21 +72,24 @@ const gridWaves = {
             offsetR += 0.2;
         }
 
-        return angle + 0.05;
+        return angle + 0.1;
     },
 
-    cornerToCorner: () => {
+    cornerToCorner: (angle, rows, columns, blocks, scene) => {
+        console.log("corner to corner");
+
         let offsetR = 0.5;
         let offsetC = 0.5;
 
         for (let r = 0; r < rows; r++) {
-            let matrix = threeD.translate(initMatrix, 30 * r, 0, 0);
             for (let c = 0; c < columns; c++) {
-                matrix = threeD.translate(matrix, 0, 0, 30);
-                gl.uniformMatrix4fv(matrixU, false, threeD.scale(matrix, 1, getScaleFactor(angle + offsetR + offsetC), 1, 25));
+                let matrix = threeD.translate(scene.matrix, blocks[r][c].position[0], blocks[r][c].position[1], blocks[r][c].position[2]);
+                matrix = threeD.scale(matrix, 1, getScaleFactor(angle + offsetR + offsetC), 1, 25);
+                blocks[r][c].setMatrix(matrix);
 
-                utils.enableBufferAttribPointers(gl, program, moreBlocks[r * columns + c]);
-                gl.drawArrays(gl.TRIANGLES, 0, 6 * 6);  // number of points (every 3 points draws 1 triangle)}, 100);
+                utils.setupBufferAttribPointers(scene.gl, blocks[r][c]);
+                utils.enableAttribUniform(scene.gl, scene.program, blocks[r][c]);
+                scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
 
                 offsetC *= 1.1;
             }
@@ -89,31 +97,26 @@ const gridWaves = {
             offsetC = 0.5;
         }
 
-        angle += 0.05;
-        requestAnimationFrame(drawScene);
+        return angle + 0.1;
     },
 
-    stingrayXbutterfly: () => {
-        utils.resize(gl.canvas);
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    stingrayXbutterfly: (angle, rows, columns, blocks, scene) => {
+        console.log("stingray butterflt");
 
-        utils.setSettings(gl);
-
-        gl.useProgram(program);
 
         let offset = 0;
 
         for (let r = 0; r < rows; r++) {
-            let matrix = threeD.translate(initMatrix, 30 * r, 0, 0);
-            matrix = threeD.scale(matrix, 1, getScaleFactor(angle + offset), 1, 25);
+
             for (let c = 0; c < columns; c++) {
-                matrix = threeD.translate(matrix, 0, 0, 30);
-                gl.uniformMatrix4fv(matrixU, false, matrix);
+                let matrix = threeD.translate(scene.matrix, blocks[r][c].position[0], blocks[r][c].position[1], blocks[r][c].position[2]);
+                matrix = threeD.scale(matrix, 1, getScaleFactor(angle + offset), 1, 25);
+                blocks[r][c].setMatrix(matrix);
 
-                utils.enableBufferAttribPointers(gl, program, moreBlocks[r * columns + c]);
-                gl.drawArrays(gl.TRIANGLES, 0, 6 * 6);  // number of points (every 3 points draws 1 triangle)}, 100);
+                utils.setupBufferAttribPointers(scene.gl, blocks[r][c]);
+                utils.enableAttribUniform(scene.gl, scene.program, blocks[r][c]);
+                scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
             }
-
             if (r < rows / 2) {
                 offset += 0.3;
             } else {
@@ -121,8 +124,7 @@ const gridWaves = {
             }
         }
 
-        angle += 0.05;
-        requestAnimationFrame(drawScene);
+        return angle + 0.1;
     },
 
     centreOutwards: () => {
