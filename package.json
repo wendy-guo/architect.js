@@ -1,20 +1,15 @@
 {
-  "name": "architect",
+  "name": "architeect",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/csc309-summer-2020/js-library-guowendy.git"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "wendy guo",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/csc309-summer-2020/js-library-guowendy/issues"
-  },
-  "homepage": "https://github.com/csc309-summer-2020/js-library-guowendy#readme"
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
