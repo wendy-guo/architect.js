@@ -7,6 +7,8 @@ import { gridWaves } from "./grid-waves.js";
 import { Camera } from "./camera.js";
 import { Scene } from "./scene.js";
 
+console.log("hello architect ^^");
+
 const Architect = {
 
     view: null,

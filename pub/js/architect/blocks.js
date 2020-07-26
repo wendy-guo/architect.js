@@ -166,7 +166,7 @@ class Block {
     matrix = null;  // transformation matrix (for animations, etc.)
 
     // cube
-    constructor(gl, dimensions, position, colour){   // add lighting boolean
+    constructor(dimensions, position, colour){   // add lighting boolean
         this.dimensions = dimensions;
         this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
         this.position = position;
@@ -252,7 +252,7 @@ class BlocksGrid {
     angle = 0;
     animation = gridWaves.static;
 
-    constructor(gl, rows, columns, dimensions, position, colour) {
+    constructor(rows, columns, dimensions, position, colour) {
         this.rows = rows;
         this.columns = columns;
         this.dimensions = dimensions;
@@ -260,7 +260,7 @@ class BlocksGrid {
         for (let r = 0; r < rows; r++) {
             let row = [];
             for (let c = 0; c < columns; c++){
-                row.push(new Block(gl, dimensions, [position[0] + r * dimensions[0], position[1], position[2] + c * dimensions[2]], colour));
+                row.push(new Block(dimensions, [position[0] + r * dimensions[0], position[1], position[2] + c * dimensions[2]], colour));
             }
             this.blocks.push(row);
         }

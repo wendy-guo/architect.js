@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: rgb(170, 87, 87);
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+#architect-grid {
+    height: 200px;
+    width: 80vw;
+    margin: auto;
+    display: block;
+}
