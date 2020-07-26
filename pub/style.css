@@ -1,0 +1,9 @@
+@import url("https://webglfundamentals.org/webgl/resources/webgl-tutorials.css");
+
+canvas {
+  height: 500px;
+  width: 500px;
+  border: 1px solid black;
+  background-color: rgb(255, 255, 255);
+  color: rgb(255, 192, 188);
+}
