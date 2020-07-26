@@ -4,25 +4,40 @@ import { threeD } from "./three-d.js";
 import { utils } from "./utils.js";
 import { Block, Stairs, BlocksGrid } from "./blocks.js";
 import { gridWaves } from "./grid-waves.js";
+import { Camera } from "./camera.js";
+import { Scene } from "./scene.js";
 
 const Architect = {
-    gl: null,
+
+    view: null,
 
     getContext: (canvas) => {
         console.log("hi");
-        Architect.gl = canvas.getContext("webgl");
-        return Architect.gl;
+        return canvas.getContext("webgl");
     },
     
-    getProgram: () => {
-        return utils.setupProgram(Architect.gl, vertexShaderSource, fragmentShaderSource)
+    getProgram: (gl) => {
+        return utils.setupProgram(gl, vertexShaderSource, fragmentShaderSource)
+    },
+
+    updateView: (gl, program, scene) => {
+        utils.resetGL(gl);
+        gl.useProgram(program);
+
+        let projection = threeD.perspective(scene.camera.fieldOfView, gl.canvas.clientWidth / gl.canvas.clientHeight, 1, 2000);
+        let camera = threeD.yRotationMatrix(scene.camera.rotation);
+        camera = threeD.translate(camera, 0, 0, 100);
+
+        let view = threeD.inverse(camera);
+        scene.setView(threeD.matrixMultiply(projection, view));
     },
 
     // classes
     Block: Block,
     Stairs: Stairs,
     BlocksGrid: BlocksGrid,
-    Scene: "scene",
+    Scene: Scene,
+    Camera: Camera
 }
 
 

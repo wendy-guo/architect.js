@@ -21,7 +21,7 @@ function main(cv) {
     return;
   }
 
-  const program = Architect.getProgram();
+  const program = Architect.getProgram(gl);
 
   const c1 = [[248, 196, 205],
   [211, 137, 149],
