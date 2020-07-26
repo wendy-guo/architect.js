@@ -258,12 +258,6 @@ class BlocksGrid {
             this.blocks.push(row);
         }
 
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < columns; c++) {
-                console.log(this.blocks[r][c].position);
-            }
-        }
-
     }
 
 
