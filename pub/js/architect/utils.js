@@ -1,6 +1,7 @@
+import { threeD } from "./three-d.js";
 
 const utils = {
-    lighting: null,
+    lighting: false,
 
     _createShader: (gl, type, source) => {
         let shader = gl.createShader(type);
@@ -38,6 +39,7 @@ const utils = {
     setupProgram: (gl, vertexShaderSource, fragmentShaderSource, lighting) => {
 
         utils.lighting = lighting;
+        console.log("lighting", lighting);
 
         let program = gl.createProgram();
         let vertexShader = utils._createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
@@ -68,59 +70,48 @@ const utils = {
         }
     },
 
-    setupBufferAttribPointers: () => {
-        if (lighting){
+    setupBufferAttribPointers: (gl, block) => {
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
+        utils._setGeometry(gl, block.getGeometry());
 
+        if (utils.lighting){
+            gl.bindBuffer(gl.ARRAY_BUFFER, block.getNormalBuffer());
+            utils._setNormals(gl, block.getNormals());
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
+            utils._setColours(gl, block.getColours());
         } else {
-            gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
-            utils._setGeometry(gl, block.getGeometry());
 
-            if (block.getLighting > 0.5) {
-                gl.bindBuffer(gl.ARRAY_BUFFER, block.getNormalBuffer());
-                utils._setNormals(gl, block.getNormals());
-            } else {
-                gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
-                utils._setColours(gl, block.getColours());
-            }
+            gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
+            utils._setColours(gl, block.getColours());
+            
         }
     },
 
-    enableAttribUniform: () => {
-        if (lighting){
+    enableAttribUniform: (gl, program, block) => {
+        let positionA = gl.getAttribLocation(program, "a_position");
+        let normalA = gl.getAttribLocation(program, "a_normal");
+        let colourA = gl.getAttribLocation(program, "a_colour");
 
-        } else {
-            let positionA = gl.getAttribLocation(program, "a_position");
-            let normalA = gl.getAttribLocation(program, "a_normal");
-            let colourA = gl.getAttribLocation(program, "a_colour");
-            let lightingA = gl.getAttribLocation(program, "a_lighting");
+        let matrixU = gl.getUniformLocation(program, "u_matrix");
+        let reverseLightU = gl.getUniformLocation(program, "u_reverseLight");
 
-            let matrixU = gl.getUniformLocation(program, "u_matrix");
-            let colourU = gl.getUniformLocation(program, "u_colour");
-            let reverseLightU = gl.getUniformLocation(program, "u_reverseLight");
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
+        gl.vertexAttribPointer(positionA, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(positionA);
 
-            gl.bindBuffer(gl.ARRAY_BUFFER, block.getPositionBuffer());
-            gl.vertexAttribPointer(positionA, 3, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(positionA);
+        gl.uniformMatrix4fv(matrixU, false, block.getMatrix());
 
-            gl.uniformMatrix4fv(matrixU, false, block.getMatrix());
+        gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
+        gl.vertexAttribPointer(colourA, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+        gl.enableVertexAttribArray(colourA);
 
-            /** 
-            if (block.getLighting() > 0.5){
-                gl.bindBuffer(gl.ARRAY_BUFFER, block.getNormalBuffer());
-                gl.vertexAttribPointer(normalA, 3, gl.FLOAT, false, 0, 0);
-                gl.enableVertexAttribArray(normalA);
-    
-                gl.uniform4fv(colourU, block.getColour());
-                gl.uniform3fv(reverseLightU, threeD.normalize([1.2, 1.1, 1]));
-            } else {
-                gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
-                gl.vertexAttribPointer(colourA, 3, gl.UNSIGNED_BYTE, true, 0, 0);
-                gl.enableVertexAttribArray(colourA);
-            } */
+        if (utils.lighting){
+            gl.bindBuffer(gl.ARRAY_BUFFER, block.getNormalBuffer());
+            gl.vertexAttribPointer(normalA, 3, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(normalA);
 
-            gl.bindBuffer(gl.ARRAY_BUFFER, block.getColourBuffer());
-            gl.vertexAttribPointer(colourA, 3, gl.UNSIGNED_BYTE, true, 0, 0);
-            gl.enableVertexAttribArray(colourA);
+            gl.uniform3fv(reverseLightU, threeD.normalize([0.5, 0.7, 1]));
         }
     },
 
