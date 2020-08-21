@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>architect.js</title>
+        <link rel="stylesheet" href="./examples.css" />
+</head>
+<body>
+    <div id="sidebar">
+        <h>examples</h>
+        structures
+        block grids 
+        lighting
+        animations
+    </div>
+    <div id="examples">
+        <div class="section">
+            <h1>structure examples</h1>
+            <p>The Block objects can be tailored to create any building your imagination renders! Combine blocks of varying
+                sizes and assemble to create a landscape of structures. Theey can be used to build game worlds, a 3D map, an
+                animated story, and more! Below is an example; a small group of structures that is animated to rotate. </p>
+        </div>
+        <canvas id="structures-rotate"></canvas>
+        
+        <div class="section">
+            <h1>blocks grid examples</h1>
+            <p>The animated "architect" header at the top of the page was created using the BlocksGrid
+                object! This object stores an array of Block objects of the same dimension.
+                It allows for easy manipulation of a collection of blocks that come together to form stunning
+                visuals. The library comes with several preset animations, but you are free to make your own!
+                Below are some other animation examples. It can be used to animated pixel art, pixel text, or
+                anything else you want!</p>
+        </div>
+
+
+    </div>
+
+    
+    <script defer type="module" src="./js/architect/architect.js"></script>
+    <script defer type="module" src="./js/examples.js"></script>
+</body>
+</html>
