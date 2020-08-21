@@ -43,7 +43,7 @@ const gridWaves = {
             offset += 0.25;
         }
 
-        return angle + 0.1;
+        return angle + 0.05;
     },
 
     interweaving: (angle, rows, columns, blocks, scene) => {
@@ -118,34 +118,6 @@ const gridWaves = {
         }
 
         return angle + 0.1;
-    },
-
-    centreOutwards: () => {
-        utils.resize(gl.canvas);
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-        utils.setSettings(gl);
-
-        gl.useProgram(program);
-
-        let offset = 0;
-
-        for (let r = 0; r < rows; r++) {
-            let matrix = threeD.translate(initMatrix, 30 * r, 0, 0);
-            for (let c = 0; c < columns; c++) {
-                let dist = getDistance([r * sideLength + r * 5, c * sideLength + c * 5], centre);
-                offset = getOffset(dist, maxDistance);
-                //offset = getOffset(dist, maxDistance);
-                matrix = threeD.translate(matrix, 0, 0, 30);
-                gl.uniformMatrix4fv(matrixU, false, threeD.scale(matrix, 1, getScaleFactor(angle + offset), 1, 25));
-
-                utils.enableBufferAttribPointers(gl, program, moreBlocks[r * columns + c]);
-                gl.drawArrays(gl.TRIANGLES, 0, 6 * 6);  // number of points (every 3 points draws 1 triangle)}, 100);
-            }
-        }
-
-        angle += 0.07;
-        requestAnimationFrame(drawScene);
     }
 
 }
