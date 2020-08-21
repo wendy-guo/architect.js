@@ -159,7 +159,6 @@ class Block {
     geometry = null;
     normals = cubeNormals;
     position = null;
-    lighting = null;
 
     positionBuffer = null;
     normalBuffer = null;
@@ -173,21 +172,14 @@ class Block {
         this.dimensions = dimensions;
         this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
         this.position = position;
-        this.lighting = colour.length === 3;
 
-        if (!this.lighting){
-            colour.forEach((c) => {
-                for (let i = 0; i < 6; i++){
-                    this.colour.push(c[0]);
-                    this.colour.push(c[1]);
-                    this.colour.push(c[2]);
-                }
-            });
-            
-        } else {
-            this.colour = convertRGB(colour);
-            this.colour.push(0.8);
-        }
+        colour.forEach((c) => {
+            for (let i = 0; i < 6; i++){
+                this.colour.push(c[0]);
+                this.colour.push(c[1]);
+                this.colour.push(c[2]);
+            }
+        });
     }
 
     addBuffers(gl){
@@ -204,19 +196,13 @@ class Block {
     setColour(colour){
         this.colour = [];
 
-        if (!this.lighting) {
-            colour.forEach((c) => {
-                for (let i = 0; i < 6; i++) {
-                    this.colour.push(c[0]);
-                    this.colour.push(c[1]);
-                    this.colour.push(c[2]);
-                }
-            });
-
-        } else {
-            this.colour = convertRGB(colour);
-            this.colour.push(0.8);
-        }
+        colour.forEach((c) => {
+            for (let i = 0; i < 6; i++) {
+                this.colour.push(c[0]);
+                this.colour.push(c[1]);
+                this.colour.push(c[2]);
+            }
+        });
     }
 
     draw(scene){
@@ -227,7 +213,6 @@ class Block {
         utils.enableAttribUniform(scene.gl, scene.program, this);
         scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
 
-        console.log("ummmm");
     }
 
     setMatrix(matrix){
@@ -341,7 +326,6 @@ class Stairs {
             utils.setupBufferAttribPointers(scene.gl, this.blocks[i]);
             utils.enableAttribUniform(scene.gl, scene.program, this.blocks[i]);
             scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
-
         }
     }
 
