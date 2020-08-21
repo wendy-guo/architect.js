@@ -1,4 +1,4 @@
-import { vertexShaderSource, fragmentShaderSource } from "./shaders.js";
+import { vertexShaderSource, fragmentShaderSource, vertexShaderSourceWithLighting, fragmentShaderSourceWithLighting } from "./shaders.js";
 import { degToRad, radToDeg } from "./angles.js";
 import { threeD } from "./three-d.js";
 import { utils } from "./utils.js";
@@ -8,7 +8,6 @@ import { Camera } from "./camera.js";
 import { Scene } from "./scene.js";
 
 console.log("hello architect ^^");
-
 const Architect = {
 
     view: null,
@@ -18,8 +17,11 @@ const Architect = {
         return canvas.getContext("webgl");
     },
     
-    getProgram: (gl) => {
-        return utils.setupProgram(gl, vertexShaderSource, fragmentShaderSource)
+    getProgram: (gl, lighting) => {
+        if (lighting){
+            return utils.setupProgram(gl, vertexShaderSourceWithLighting, fragmentShaderSourceWithLighting, true)
+        }
+        return utils.setupProgram(gl, vertexShaderSource, fragmentShaderSource, false)
     },
 
     updateView: (scene) => {
