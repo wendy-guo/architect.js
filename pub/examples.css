@@ -1,12 +1,68 @@
 * {
     margin: 0;
     padding: 0;
-    color: rgb(170, 87, 87);
+    color: rgb(182, 101, 101);
     font-family: 'Courier New', Courier, monospace;
+    background-color: rgb(255, 241, 241);
+    font-weight: 600;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#topbar {
+    margin: 5vh auto 5vh auto;
+}
+
+#examples{
+    margin: 25px auto 25px auto;
 }
 
 canvas {
     display: block;
+    width: 500px;
+    height: 500px;
     margin: 20px auto 20px auto;
 }
 
+a {
+    text-decoration: none;
+    font-size: 24px;
+    margin: 0 20px 0 20px;
+}
+
+a:hover{
+    color: rgb(145, 57, 57);
+}
+
+
+div{
+    text-align: center;
+}
+
+pre{
+    text-align: start;
+}
+
+.code-header{
+    margin-top: 30px;
+    font-weight: 800;
+}
+
+.const-punc{
+    color: rgb(255, 170, 170);
+}
+
+.func{
+    color: rgb(199, 224, 109);
+}
+
+.obj{
+    color: rgb(255, 140, 111);
+}
+
+.canvas-name{
+    color: rgb(145, 57, 57);
+}
