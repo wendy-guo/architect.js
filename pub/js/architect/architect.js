@@ -8,44 +8,51 @@ import { Camera } from "./camera.js";
 import { Scene } from "./scene.js";
 
 console.log("hello architect ^^");
-const Architect = {
 
-    view: null,
+(function (global) { // the window object serves as the global object in the browser.
 
-    getContext: (canvas) => {
-        console.log("hi");
-        return canvas.getContext("webgl");
-    },
-    
-    getProgram: (gl, lighting) => {
-        if (lighting){
-            return utils.setupProgram(gl, vertexShaderSourceWithLighting, fragmentShaderSourceWithLighting, true)
-        }
-        return utils.setupProgram(gl, vertexShaderSource, fragmentShaderSource, false)
-    },
+    // this function is currently only in the scope of the anonymous function at the moment.
+    function Architect() {
+        this.gridWaves = gridWaves;
+        this.Block = Block;
+        this.Stairs = Stairs,
+        this.BlocksGrid = BlocksGrid;
+        this.Scene = Scene;
+        this.Camera = Camera;
+    }
 
-    updateView: (scene) => {
-        utils.resetGL(scene.gl);
-        scene.gl.useProgram(scene.program);
+    Architect.prototype = {
 
-        let projection = threeD.perspective(scene.camera.fieldOfView, scene.gl.canvas.clientWidth / scene.gl.canvas.clientHeight, 1, 2000);
-        let camera = threeD.yRotationMatrix(scene.camera.rotation);
-        camera = threeD.translate(camera, 0, 0, 100);
+        getContext: (canvas) => {
+            console.log("hi");
+            return canvas.getContext("webgl");
+        },
 
-        let view = threeD.inverse(camera);
-        scene.setView(threeD.matrixMultiply(projection, view));
-    },
+        getProgram: (gl, lighting) => {
+            if (lighting) {
+                return utils.setupProgram(gl, vertexShaderSourceWithLighting, fragmentShaderSourceWithLighting, true)
+            }
+            return utils.setupProgram(gl, vertexShaderSource, fragmentShaderSource, false)
+        },
 
-    // animations
-    gridWaves: gridWaves,
+        updateView: (scene) => {
+            utils.resetGL(scene.gl);
+            scene.gl.useProgram(scene.program);
 
-    // classes
-    Block: Block,
-    Stairs: Stairs,
-    BlocksGrid: BlocksGrid,
-    Scene: Scene,
-    Camera: Camera
-}
+            let projection = threeD.perspective(scene.camera.fieldOfView, scene.gl.canvas.clientWidth / scene.gl.canvas.clientHeight, 1, 2000);
+            let camera = threeD.yRotationMatrix(scene.camera.rotation);
+            camera = threeD.translate(camera, 0, 0, 100);
+
+            let view = threeD.inverse(camera);
+            scene.setView(threeD.matrixMultiply(projection, view));
+        },
+
+    }
+
+    /* Can do all other library setup below without conflicting with the global namespace */
 
 
-export { Architect };
+    global.Architect = global.Architect || Architect
+
+})(window);
+
