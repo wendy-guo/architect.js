@@ -64,6 +64,14 @@ class Scene {
         this.rotation = this.rotation.map((angle, i) => angle + angles[i]);
     }
 
+    scaleScene(scale) {
+        this.scale = this.scale.map((amount, i) => amount + scale[i]);
+    }
+
+    translateScene(translation) {
+        this.translation = this.translation.map((amount, i) => amount + translation[i]);
+    }
+
     updateMatrix(){
         this.matrix = threeD.transform(this.view, this.translation, this.rotation, this.scale);
     }
