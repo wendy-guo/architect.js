@@ -12,7 +12,6 @@ const getScaleFactor = (angle) => {
 const gridWaves = {
 
     static: (angle, rows, columns, blocks, scene) => {
-        console.log("static");
 
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < columns; c++) {
@@ -28,11 +27,8 @@ const gridWaves = {
     },
 
     leftToRight: (angle, rows, columns, blocks, scene) => {
-        console.log("left to right");
 
         let offset = 0;
-
-        console.log(blocks);
 
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < columns; c++) {
@@ -51,7 +47,6 @@ const gridWaves = {
     },
 
     interweaving: (angle, rows, columns, blocks, scene) => {
-        console.log("interweaving");
 
         let offsetR = 0;
         let offsetC = 0;
@@ -76,7 +71,6 @@ const gridWaves = {
     },
 
     cornerToCorner: (angle, rows, columns, blocks, scene) => {
-        console.log("corner to corner");
 
         let offsetR = 0.5;
         let offsetC = 0.5;
@@ -101,7 +95,6 @@ const gridWaves = {
     },
 
     stingrayXbutterfly: (angle, rows, columns, blocks, scene) => {
-        console.log("stingray butterflt");
 
 
         let offset = 0;
@@ -136,14 +129,12 @@ const gridWaves = {
         gl.useProgram(program);
 
         let offset = 0;
-        log(centre);
 
         for (let r = 0; r < rows; r++) {
             let matrix = threeD.translate(initMatrix, 30 * r, 0, 0);
             for (let c = 0; c < columns; c++) {
                 let dist = getDistance([r * sideLength + r * 5, c * sideLength + c * 5], centre);
                 offset = getOffset(dist, maxDistance);
-                log(offset);
                 //offset = getOffset(dist, maxDistance);
                 matrix = threeD.translate(matrix, 0, 0, 30);
                 gl.uniformMatrix4fv(matrixU, false, threeD.scale(matrix, 1, getScaleFactor(angle + offset), 1, 25));
