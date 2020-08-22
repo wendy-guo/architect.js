@@ -147,6 +147,18 @@ class Block {
 
     }
 
+    setColour(colour) {
+        this.colour = [];
+
+        colour.forEach((c) => {
+            for (let i = 0; i < 6; i++) {
+                this.colour.push(c[0]);
+                this.colour.push(c[1]);
+                this.colour.push(c[2]);
+            }
+        });
+    }
+
     setMatrix(matrix){
         this.matrix = matrix;
     }
