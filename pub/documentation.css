@@ -1,17 +1,102 @@
 *{
-    margin: 0;
-    padding: 0;
-    color: rgb(182, 101, 101);
     font-family: 'Courier New', Courier, monospace;
-    background-color: rgb(255, 241, 241);
     font-weight: 600;
 }
 
 body {
     display: flex;
     flex-direction: row;
+    background-color: rgb(255, 241, 241);
+        color: rgb(182, 101, 101);
 }
 
-div{
-    border: 1px solid black;
+#sidebar{
+    width: 20%;
+    height: 100%;
+    background-color: rgb(255, 232, 232);
+    padding-top: 30px;
+    padding-left: 30px;
+    position: fixed;
+}
+
+#content{
+    width: 80%;
+    margin-left: 22%;
+    padding: 50px;
+}
+
+.side-h{
+    color: rgb(145, 57, 57);
+}
+
+.side-sh{
+    margin-left: 20%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: start;
+}
+
+a{
+    text-decoration: none;
+    color: rgb(182, 101, 101);
+}
+
+a:hover{
+    color: rgb(145, 57, 57);
+}
+
+h1{
+    color: rgb(145, 57, 57);
+}
+
+h2{
+    color:  rgb(248, 132, 132);
+}
+
+table{
+    background-color: rgb(255, 232, 232);
+    padding: 40px;
+    border-radius: 25px;
+    margin: 20px;
+}
+
+th{
+    color: rgb(145, 57, 57);
+}
+
+tr{
+    padding: 10px 0 10px 0;
+}
+
+tr:nth-of-type(odd) {
+    color:rgb(122, 77, 77);
+}
+
+td{
+    padding: 0 30px 0 30px;
+}
+
+th{
+    background-color: rgb(255, 240, 240);
+    border-radius: 10px;
+}
+
+code{
+    color: rgb(201, 137, 137);
+}
+
+.tag{
+    color: rgb(255, 169, 134);
+}
+
+.const-punc{
+    color: rgb(255, 170, 170);
+}
+
+.func{
+    color: rgb(199, 224, 109);
+}
+
+.obj{
+    color: rgb(255, 140, 111);
 }
