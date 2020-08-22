@@ -1,7 +1,7 @@
 import { degToRad } from "./angles.js";
 
 class Camera {
-    fieldOfView = degToRad(35);
+    fieldOfView = 0;
     rotation = 0;
 
     constructor(fieldOfView, rotation){
@@ -15,10 +15,6 @@ class Camera {
 
     setRotation(rotation){
         this.rotation = degToRad(rotation);
-    }
-
-    rotate(angle){
-        this.rotation += degToRad(angle);
     }
 }
 
