@@ -1,6 +1,6 @@
 # architect.js
 
-landing page: https://architectjs.herokuapp.com/
+landing page: https://architectjs.herokuapp.com/ <br>
 documentation: https://architectjs.herokuapp.com/documentation.html
 
 <h1>Getting Started</h1>
