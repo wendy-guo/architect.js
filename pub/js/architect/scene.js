@@ -46,10 +46,6 @@ class Scene {
         this.objects.push(object);
     }
 
-    setCamera(camera){
-        this.camera = camera;
-    }
-
     setView(view){
         this.view = view;
         this.updateMatrix();
