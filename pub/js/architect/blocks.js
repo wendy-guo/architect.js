@@ -53,60 +53,8 @@ const cubeGeometry = [
     1, 1, 0,
     0, 1, 1
 ];
-const defaultColours = [
 
-    // face 1
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-
-    // face 2
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-
-    // face 3
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-
-    // face 4 (right)
-    253, 231, 205,
-    253, 231, 205,
-    253, 231, 205,
-    253, 231, 205,
-    253, 231, 205,
-    253, 231, 205,
-
-    // face 6
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-    211, 137, 149,
-
-    // face 5 (top)
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-    248, 196, 205,
-
-];
 const cubeNormals = [
-
-
     0, 0, 1,
     0, 0, 1,
     0, 0, 1,
@@ -151,14 +99,10 @@ const cubeNormals = [
 
 ]
 
-const convertRGB = (rgb) => {
-    return rgb.map((val) => val/255);
-}
-
 class Block {
     geometry = null;
     normals = cubeNormals;
-    position = null;
+    position = [0, 0, 0];
 
     positionBuffer = null;
     normalBuffer = null;
@@ -191,18 +135,6 @@ class Block {
     setDimensions(dimensions){
         this.dimensions = dimensions;
         this.geometry = cubeGeometry.map((val, i) => val * dimensions[i % 3]);
-    }
-
-    setColour(colour){
-        this.colour = [];
-
-        colour.forEach((c) => {
-            for (let i = 0; i < 6; i++) {
-                this.colour.push(c[0]);
-                this.colour.push(c[1]);
-                this.colour.push(c[2]);
-            }
-        });
     }
 
     draw(scene){
@@ -264,7 +196,6 @@ class BlocksGrid {
     rows = 0;
     columns = 0;
     dimensions = [1, 1, 1];
-    numBlocks = 0;
 
     angle = 0;
     animation = gridWaves.static;
@@ -328,22 +259,6 @@ class Stairs {
             scene.gl.drawArrays(scene.gl.TRIANGLES, 0, 6 * 6);
         }
     }
-
-    addSteps(numSteps){
-        this.numSteps += numSteps;
-        // push more blocks
-    }
-
-    removeSteps(numSteps){
-        //check not greater than this.numSteps
-        this.numSteps -= numSteps;
-        // pop off blocks from array
-    }
-}
-
-class Structure {
-    
-
 }
 
 export { Block, Stairs, BlocksGrid };
