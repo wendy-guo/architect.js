@@ -10,25 +10,22 @@
 
 <body>
     <div id="sidebar">
-        <div class="side-h">Getting Started</div>
-            <div class="side-sh">{ installation }</div>
-            <div class="side-sh">{ scene setup }</div>
-            <div class="side-sh">{ object creation }</div>
-            <div class="side-sh">{ animation }</div>
-        <div class="side-h">Objects</div>
-            <div class="side-sh">{ Block }</div>
-            <div class="side-sh">{ Stairs }</div>
-            <div class="side-sh">{ BlocksGrid }</div>
-            <div class="side-sh">{ Scene }</div>
-            <div class="side-sh">{ Camera }</div>
-        <div class="side-h">Other methods</div>
-            <div class="side-sh">{ setup }</div>
-            <div class="side-sh">{ threeD }</div>
+        <div class="side-h"><a href="#gs">Getting Started</a></div>
+            <div class="side-sh"><a href="#ins">{ installation }</a></div>
+            <div class="side-sh"><a href="#ss">{ scene setup }</a></div>
+            <div class="side-sh"><a href="#oc">{ object creation }</a></div>
+            <div class="side-sh"><a href="#ani">{ animation }</a></div>
+        <div class="side-h"><a href="#obj">Objects</a></div>
+            <div class="side-sh"><a href="#bl">{ Block }</a></div>
+            <div class="side-sh"><a href="#st">{ Stairs }</a></div>
+            <div class="side-sh"><a href="#bg">{ BlocksGrid }</a></div>
+            <div class="side-sh"><a href="#sc">{ Scene }</a></div>
+            <div class="side-sh"><a href="#cam">{ Camera }</a></div>
 
     </div>
     <div id="content">
-        <h>Getting Started</h>
-        <h1>installation</h1>
+        <h1 id="gs">Getting Started</h1>
+        <h2 id="ins">installation</h2>
         To use architect.js, simply download the code from <a>github</a> and link the architect.js script inside the /pub/js/architect directory to your HTML file with defer. Add your own script files that use the library after that line with defer.
         <pre>
             <code>
@@ -42,46 +39,47 @@
                 
                 &ltbody>
                     &ltcanvas id="canvas">&lt/canvas>
-                    &ltscript defer type="module" src="js/architect/architect.js">&lt/script>
+                    <span class="tag">&ltscript defer type="module" src="js/architect/architect.js">&lt/script></span>
                     &ltscript defer src="js/my_script.js">&lt/script>
                 &lt/body>
                 
                 &lt/html>
             </code>
         </pre>
+        <h2 id="ss">scene set-up</h2>
 
         To set up your scene, first create a new instance of Architect in your Javascript file. Select the canvas element with its Id, and get the WebGL context. Set up the program, camera, and scene, with the option of lighting, camera angle, field of view, and scene transformation.
 
         <pre>
             <code>
                 // architect instance
-                const arch = new Architect();
+                <span class="const-punc">const</span> arch <span class="const-punc">=</span> new Architect()<span class="const-punc">;</span>
 
                 // canvas element to display to
-                const canvas_1 = document.getElementById("canvas");
+                <span class="const-punc">const</span> canvas_1 <span class="const-punc">=</span> document.<span class="func">getElementById</span>("canvas")<span class="const-punc">;</span>
 
                 // webgl context for rendering
-                const gl_1 = arch.getContext(canvas_1);
+                <span class="const-punc">const</span> gl_1 <span class="const-punc">=</span> arch.<span class="func">getContext</span>(canvas_1)<span class="const-punc">;</span>
 
                 // get program for webgl
-                const program_1 = arch.getProgram(gl_1, false);  // falsee for lighting option
+                <span class="const-punc">const</span> program_1 <span class="const-punc">=</span> arch.<span class="func">getProgram</span>(gl_1, false)<span class="const-punc">;</span>  // falsee for lighting option
                 
                 // camera for scene
-                const camera_1 = new arch.Camera(0, 0);
+                <span class="const-punc">const</span> camera_1 <span class="const-punc">=</span> new arch.<span class="obj">Camera</span>(0, 0)<span class="const-punc">;</span>
                 
                 // scene with intial transformations set
-                const scene_1 = new arch.Scene(gl_1, program_1, camera_1, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+                <span class="const-punc">const</span> scene_1 <span class="const-punc">=</span> new arch.<span class="obj">Scene</span>(gl_1, program_1, camera_1, [0, 0, 0], [0, 0, 0], [1, 1, 1])<span class="const-punc">;</span>
 
             </code>
         </pre>
 
-        Object creation
+        <h2 id="oc">object creation</h2>
 
-        Here are some colour constants we are going to use for our objects. Each array of three corresponds to the rgb values for one face of the block.
+        Here are some colour <span class="const-punc">const</span>ants we are going to use for our objects. Each array of three corresponds to the rgb values for one face of the block.
         <pre>
             <code>
                 // leaf colours
-                const c1 = [[59, 24, 24],
+                <span class="const-punc">const</span> c1 <span class="const-punc">=</span> [[59, 24, 24],
                 [59, 24, 24],
                 [59, 24, 24],
                 [59, 24, 24],
@@ -89,7 +87,7 @@
                 [53, 20, 20]]
                 
                 // trunk colours
-                const c2 = [[142, 187, 105],
+                <span class="const-punc">const</span> c2 <span class="const-punc">=</span> [[142, 187, 105],
                 [142, 187, 105],
                 [142, 187, 105],
                 [142, 187, 105],
@@ -97,52 +95,378 @@
                 [142, 187, 105]]
             </code>
         </pre>
-        Next, we initialize our Block objects, with their dimensions, positions, and colours. We add them to the scene we created in the code above. To display the objects on the canvas, simply call updateView() and draw() for the scene.
+        Next, we initialize our Block objects, with their dimensions, positions, and colours. We add them to the scene we created in the code above. To display the objects on the canvas, simply call <span class="func">updateView</span>() and draw() for the scene.
         <pre>
             <code>
                 // create block objects
-                const trunk = new arch.Block([50, 70, 50], [0, 0, 0], c1);
-                const tree1 = new arch.Block([160, 80, 160], [-50, 70, -50], c2);
-                const tree2 = new arch.Block([120, 60, 120], [-30, 150, -30], c2);
-                const tree3 = new arch.Block([80, 40, 80], [-10, 210, -10], c2);
-                const tree4 = new arch.Block([40, 40, 40], [10, 250, 10], c2);
+                <span class="const-punc">const</span> trunk <span class="const-punc">=</span> new arch.<span class="obj">Block</span>([50, 70, 50], [0, 0, 0], c1)<span class="const-punc">;</span>
+                <span class="const-punc">const</span> tree1 <span class="const-punc">=</span> new arch.<span class="obj">Block</span>([160, 80, 160], [-50, 70, -50], c2)<span class="const-punc">;</span>
+                <span class="const-punc">const</span> tree2 <span class="const-punc">=</span> new arch.<span class="obj">Block</span>([120, 60, 120], [-30, 150, -30], c2)<span class="const-punc">;</span>
+                <span class="const-punc">const</span> tree3 <span class="const-punc">=</span> new arch.<span class="obj">Block</span>([80, 40, 80], [-10, 210, -10], c2)<span class="const-punc">;</span>
+                <span class="const-punc">const</span> tree4 <span class="const-punc">=</span> new arch.<span class="obj">Block</span>([40, 40, 40], [10, 250, 10], c2)<span class="const-punc">;</span>
 
                 // add blocks to scene
-                scene_1.addToScene(trunk);
-                scene_1.addToScene(tree1);
-                scene_1.addToScene(tree2);
-                scene_1.addToScene(tree3);
-                scene_1.addToScene(tree4);
+                scene_1.addToScene(trunk)<span class="const-punc">;</span>
+                scene_1.addToScene(tree1)<span class="const-punc">;</span>
+                scene_1.addToScene(tree2)<span class="const-punc">;</span>
+                scene_1.addToScene(tree3)<span class="const-punc">;</span>
+                scene_1.addToScene(tree4)<span class="const-punc">;</span>
 
                 // update view of scene
-                arch.updateView(scene_1);
+                arch.<span class="func">updateView</span>(scene_1)<span class="const-punc">;</span>
                 
                 // draw scene on canvas
-                scene_1.draw();
+                scene_1.<span class="func">draw</span>()<span class="const-punc">;</span>
             </code>
         </pre>
+        <h2 id="ani">animation</h2>
         Currently, our scene is static and we can only view the object from one angle. To animate it, we call requestAnimationFrame and add our animations.
         <code>
             <pre>
-                requestAnimationFrame(drawScenes);
+                requestAnimationFrame(drawScenes)<span class="const-punc">;</span>
                 
                 function drawScenes() {
                 
                     // update view for scene
-                    arch.updateView(scene_1);
+                    arch.<span class="func">updateView</span>(scene_1)<span class="const-punc">;</span>
                     
                     // draw scene
-                    scene_1.draw();
+                    scene_1.<span class="func">draw</span>()<span class="const-punc">;</span>
                     
                     // animate scene
-                    scene_1.rotateScene([0, 1, 0]);  // rotate along y-axis
+                    scene_1.<span class="func">rotateScene</span>([0, 1, 0])<span class="const-punc">;</span>  // rotate along y-axis
                     
-                    requestAnimationFrame(drawScenes); // request next frame
+                    requestAnimationFrame(drawScenes)<span class="const-punc">;</span> // request next frame
                 }
             </pre>
         </code>
-    </div>
 
+        <h1 id="obj">Objects</h1>
+
+        <h2 id="bl">Block</h2>
+        <table>
+            <tr>
+                <th>property</th>
+                <th>type</th>
+                <th>default</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>geometry</td>
+                <td>Array[int]</td>
+                <td>[
+                0, 0, 0,
+                0, 1, 0, ...
+                1, 1, 0,
+                0, 1, 1
+                ]</td>
+                <td>Position of each of the 36 vertices of the object</td>
+            </tr>
+            <tr>
+                <td>colours</td>
+                <td>Array[int]</td>
+                <td>null</td>
+                <td>Colours for each of the 36 vertices of the object</td>
+            </tr>
+            <tr>
+                <td>normals</td>
+                <td>Array[int]</td>
+                <td>[0, 0, 1, ..., 0, 1, 0]</td>
+                <td>Normals for each of the 36 vertices of the object.</td>
+            </tr>
+            <tr>
+                <td>position</td>
+                <td>Array[int]</td>
+                <td>[0, 0, 0]</td>
+                <td>x, y, and z coordinates of object.</td>
+            </tr>
+            <tr>
+                <td>dimensions</td>
+                <td>Array[int]</td>
+                <td>[1, 1, 1]</td>
+                <td>Length, width, and depth of object.</td>
+            </tr>
+            <tr>
+                <td>matrix</td>
+                <td>Array[Array[int]]</td>
+                <td>null</td>
+                <td>Transformation matrix for object's translation, scaling, and rotation values.</td>
+            </tr>
+            <tr>
+                <td>positionBuffer</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in position of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>colourBuffer</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in colour of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>normalBuffer</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in normals of objects to shaders.</td>
+            </tr>
+
+        </table>
+        <table>
+            <tr>
+                <th>method</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>constructor(dimensions: Array[int], position: Array[int], colour: Array[int])</td>
+                <td>initialize Block instance</td>
+            </tr>
+            <tr>
+                <td>addBuffers()</td>
+                <td>set up buffers for object to render</td>
+            </tr>
+            <tr>
+                <td>setDimensions(dimensions: [int, int, int])</td>
+                <td>set dimensions of object</td>
+            </tr>
+
+            <tr>
+                <td>setColours(colours: Array[int])</td>
+                <td>set colour of object</td>
+            </tr>
+            <tr>
+                <td>draw(scene: Scene)</td>
+                <td>draw object on scene</td>
+            </tr>
+        </table>
+        <h2 id="bg">BlocksGrid</h2>
+        <table>
+            <tr>
+                <th>property</th>
+                <th>type</th>
+                <th>default</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>blocks</td>
+                <td>Array[Block]</td>
+                <td>[]</td>
+                <td>Array of Block objects that make up grid.</td>
+            </tr>
+            <tr>
+                <td>rows</td>
+                <td>int</td>
+                <td>0</td>
+                <td>Number of Block objects in one row.</td>
+            </tr>
+            <tr>
+                <td>columns</td>
+                <td>int</td>
+                <td>0</td>
+                <td>Number of Block objects in one column.</td>
+            </tr>
+            <tr>
+                <td>dimensions</td>
+                <td>Array[int]</td>
+                <td>[1, 1, 1]</td>
+                <td>Dimensions of the Block objects of the grid.</td>
+            </tr>
+            <tr>
+                <td>angle</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in normals of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>animation</td>
+                <td>Animation Function</td>
+                <td>gridWaves.static</td>
+                <td>Animation for object.</td>
+            </tr>
+            
+        </table>
+        <table>
+            <tr>
+                <th>method</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>constructor(rows: int, columns: int, dimensions: Array[int], position: Array[int], colour: Array[int])</td>
+                <td>initialize BlocksGrid instance</td>
+            </tr>
+            <tr>
+                <td>draw(scene: Scene)</td>
+                <td>draw object on scene</td>
+            </tr>
+        </table>
+
+        <h2 id="st">Stairs</h2>
+        <table>
+            <tr>
+                <th>property</th>
+                <th>type</th>
+                <th>default</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>blocks</td>
+                <td>Array[Block]</td>
+                <td>[]</td>
+                <td>Array of Block objects that make up grid.</td>
+            </tr>
+            <tr>
+                <td>dimensions</td>
+                <td>Array[int]</td>
+                <td>[1, 1, 1]</td>
+                <td>Dimensions of the Block objects of the grid.</td>
+            </tr>
+            <tr>
+                <td>position</td>
+                <td>Array[int]</td>
+                <td>[1, 1, 1]</td>
+                <td>Position of the first Block object.</td>
+            </tr>
+        
+        </table>
+        <table>
+            <tr>
+                <th>method</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>constructor(numSteps: int, dimensions: Array[int], position: Array[int], colour: Array[int])</td>
+                <td>initialize Stairs instance</td>
+            </tr>
+            <tr>
+                <td>draw(scene: Scene)</td>
+                <td>draw object on scene</td>
+            </tr>
+        </table>
+        
+        <h2 id="cam">Camera</h2>
+        <table>
+            <tr>
+                <th>property</th>
+                <th>type</th>
+                <th>default</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>fieldOfView</td>
+                <td>int</td>
+                <td>0</td>
+                <td>Angle of field of view of scene.</td>
+            </tr>
+            <tr>
+                <td>rotation</td>
+                <td>int</td>
+                <td>0</td>
+                <td>Angle of camera rotation.</td>
+            </tr>
+        
+        </table>
+        <table>
+            <tr>
+                <th>method</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>constructor(fieldOfview: int, rotation: int)</td>
+                <td>initialize Camera instance</td>
+            </tr>
+            <tr>
+                <td>setFieldOfView(fieldOfView: int)</td>
+                <td>set field of view of camera</td>
+            </tr>
+        
+            <tr>
+                <td>setRotation(rotation: int)</td>
+                <td>set rotation of camera</td>
+            </tr>
+        </table>
+        <h2 id="sc">Scene</h2>
+        <table>
+            <tr>
+                <th>property</th>
+                <th>type</th>
+                <th>default</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>translation</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in colour of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>rotation</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in normals of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>scale</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in colour of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>view</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in normals of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>matrix</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in colour of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>camera</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in normals of objects to shaders.</td>
+            </tr>
+            <tr>
+                <td>objects</td>
+                <td>WebGL buffer</td>
+                <td>null</td>
+                <td>WebGL buffer for passing in normals of objects to shaders.</td>
+            </tr>
+        
+        </table>
+        <table>
+            <tr>
+                <th>method</th>
+                <th>description</th>
+            </tr>
+            <tr>
+                <td>constructor(gl: WebGLContext, program: WebGLProgram, camera: Camera, translation: Array[int], rotation: Array[int], scale: Array[int])</td>
+                <td>initialize Scene instance</td>
+            </tr>
+            <tr>
+                <td>addToScene(object: Object)</td>
+                <td>add object to be drawn in this scene</td>
+            </tr>
+            <tr>
+                <td>rotateScene(angles: Array[int])</td>
+                <td>rotate scene by angles</td>
+            </tr>
+            <tr>
+                <td>translateScene(translation: Array[int])</td>
+                <td>translate scene by translation</td>
+            </tr>
+            <tr>
+                <td>scaleScene(scale: Array[int])</td>
+                <td>scale scene by scale</td>
+            </tr>
+            <tr>
+                <td>draw()</td>
+                <td>draw objects in scene</td>
+            </tr>
+        </table>
+    </div>
 
     <script defer type="module" src="./js/architect/architect.js"></script>
 </body>
